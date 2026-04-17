@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Wormhole Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            background-color: #f8f9fa;
+        }
+        nav {
+            width: 240px;
+            background-color: #e9ecef;
+            padding: 2rem 1rem;
+        }
+        main {
+            flex-grow: 1;
+            padding: 2rem;
+        }
+        .form-label {
+            margin-top: 1rem;
+        }
+        .result {
+            margin-top: 2rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="d-flex flex-column">
+        <h4 class="mb-4 text-secondary">Navigation</h4>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a class="nav-link text-dark" href="/">Dashboard</a></li>
+            <li class="nav-item mb-2"><a class="nav-link text-dark" href="/predicted_accuracy">Graph</a></li>
+            <li class="nav-item mb-2"><a class="nav-link text-dark" href="/history">History</a></li>
+        </ul>
+    </nav>
+
+    <main>
+        <h2 class="mb-4 text-dark">Wormhole Attack Detection</h2>
+        <form method="POST" class="needs-validation" novalidate>
+            <div class="mb-3">
+                <label class="form-label">Network Packet Size</label>
+                <input type="number" name="network_packet_size" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Protocol Type</label>
+                <select name="protocol_type" class="form-select">
+                    {% for label in protocol_map %}
+                    <option value="{{ label }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Login Attempts</label>
+                <input type="number" name="login_attempts" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Session Duration (seconds)</label>
+                <input type="number" name="session_duration" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Encryption Used</label>
+                <select name="encryption_used" class="form-select">
+                    {% for label in encryption_map %}
+                    <option value="{{ label }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">IP Reputation Score</label>
+                <input type="number" step="0.01" name="ip_reputation_score" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Failed Logins</label>
+                <input type="number" name="failed_logins" class="form-control" required>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Browser Type</label>
+                <select name="browser_type" class="form-select">
+                    {% for label in browser_map %}
+                    <option value="{{ label }}">{{ label }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Unusual Time Access</label>
+                <select name="unusual_time_access" class="form-select">
+                    <option value="0">No</option>
+                    <option value="1">Yes</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn btn-outline-dark mt-3">Predict</button>
+        </form>
+
+        {% if prediction is not none %}
+        <div class="result alert alert-secondary">
+            <strong>Result:</strong> {{ result }}
+        </div>
+        {% endif %}
+    </main>
+</body>
+</html>
